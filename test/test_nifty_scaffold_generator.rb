@@ -85,9 +85,10 @@ class TestNiftyScaffoldGenerator < Test::Unit::TestCase
         end
       end
     
-      should "generate model with class as camelcase name" do
+      should "generate model with class as camelcase name and add attr_accessible for attributes" do
         assert_generated_file "app/models/line_item.rb" do |body|
           assert_match "class LineItem < ActiveRecord::Base", body
+          assert_match "attr_accessible :name, :description", body
         end
       end
     end
@@ -120,7 +121,7 @@ class TestNiftyScaffoldGenerator < Test::Unit::TestCase
     end
   
     context "generator with new and create actions" do
-      rails_generator :nifty_scaffold, "line_item", "new", "create"
+      rails_generator :nifty_scaffold, "LineItem", "new", "create"
     
       should_not_generate_file "app/views/line_items/create.html.erb"
       should_not_generate_file "app/views/line_items/_form.html.erb"
